@@ -60,5 +60,10 @@ class Board():
             if i%3 == 0:
                 print('\n\n')
             print('\t\t' + str(self.cards[i]),end = '')
-b = Board()
-b.display()
+    def replaceIndex(self,i):
+        nextCard = self.deck.dealCard()
+        if nextCard == 'NoCards':
+            self.cards[i] = ''
+            self.cardCount -= 1
+        else:
+            self.cards[i] = nextCard
