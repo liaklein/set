@@ -28,6 +28,7 @@ class Deck():
                     for shading in shadings:
                         cards.append(Card(color,number,shape,shading))
         return cards
+
     def dealCard(self):
         #if the deck is empty, return error
         if self.cardCount == 0:
