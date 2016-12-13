@@ -5,16 +5,17 @@ def validSet(card1,card2,card3):
         att1 = card1.attributes[att]
         att2 = card2.attributes[att]
         att3 = card3.attributes[att]
+        print att1 + ' ' + att2 + ' ' + att3
         if not(allSame(att1,att2,att2) or allDifferent(att1,att2,att3)):
             return False
-        return True
+    return True
 def allSame(att1,att2,att3):
     if att1 == att2 and att2 == att3:
         return True
     else:
         return False
 def allDifferent(att1,att2,att3):
-    if not att1 == att2 and not att2 == att3 and not att1 == att2:
+    if not att1 == att2 and not att2 == att3 and not att1 == att3:
         return True
     else:
         return False
