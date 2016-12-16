@@ -22,7 +22,10 @@ def allDifferent(att1,att2,att3):
         return False
 
 def validateInput(userInput):
-    cards = userInput.split(' ')
+    cards = userInput.strip()
+    if cards == 'add':
+        return cards
+    cards = cards.split(' ')
     if not cards or len(cards) != 3:
         print('Invalid input')
         return
