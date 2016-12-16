@@ -40,7 +40,11 @@ def validateInput(userInput):
             return
     # numbers should be between 0 and 11 inclusive, no duplicates
     intCards.sort()
-    if intCards[0] < 0 or intCards[2] > 14 or intCards[0] == intCards[1] or intCards[1] == intCards[2]:
+    if extra:
+        limit = 14
+    else:
+        limit = 11
+    if intCards[0] < 0 or intCards[2] > limit or intCards[0] == intCards[1] or intCards[1] == intCards[2]:
         print('Invalid input')
         return
     return intCards
