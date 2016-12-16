@@ -40,7 +40,7 @@ def validateInput(userInput):
             return
     # numbers should be between 0 and 11 inclusive, no duplicates
     intCards.sort()
-    if intCards[0] < 0 or intCards[2] > 11 or intCards[0] == intCards[1] or intCards[1] == intCards[2]:
+    if intCards[0] < 0 or intCards[2] > 14 or intCards[0] == intCards[1] or intCards[1] == intCards[2]:
         print('Invalid input')
         return
     return intCards
@@ -54,6 +54,12 @@ def main():
         userInput = raw_input("\n\nPlease Enter Set in space separated list (e.g. 0 10 4): ")
         cards = validateInput(userInput)
         if not cards:
+            continue
+        if cards == 'add':
+            board.addCard()
+            board.addCard()
+            board.addCard()
+            extra = True
             continue
         c1,c2,c3 = cards
         if validSet(board.cards[c1],board.cards[c2],board.cards[c3]):
