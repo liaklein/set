@@ -7,10 +7,11 @@ class bcolors:
    RED = '\033[91m'
    BOLD = '\033[1m'
    UNDERLINE = '\033[4m'
+   ITALICS = '\033[3m'
    END = '\033[0m'
 
 colors = {'R':bcolors.RED,'G':bcolors.GREEN,'P':bcolors.PURPLE}
-shadings = {'E':'','F':bcolors.BOLD,'|':bcolors.UNDERLINE}
+shadings = {'E':bcolors.ITALICS,'F':bcolors.BOLD,'|':bcolors.UNDERLINE}
 shapes = {'O':'O ','S':'S ','<>':'<>'}
 class Card():
     def __init__(self,color,number,shape,shading):
@@ -24,7 +25,6 @@ class Card():
             st += shapes[self.attributes['shape']]
         st += bcolors.END
         return st
-
 
 class Deck():
     def __init__(self):
@@ -76,24 +76,26 @@ class Board():
         else:
             return False
     def display(self):
-        for i in range(12):
+        for i in range(len(self.cards)):
             if i%3 == 0:
                 print('\n\n')
             print('\t\t' + str(self.cards[i]),end = '')
     def replaceIndex(self,i):
         nextCard = self.deck.dealCard()
         if nextCard == 'NoCards':
-            self.cards[i] = ''
+            self.cards[i] = ' '
             self.cardCount -= 1
         else:
             self.cards[i] = nextCard
-
-def main():
-    print(bcolors.PURPLE + 'hi' + bcolors.END)
-    print(bcolors.PURPLE + bcolors.BOLD + 'hi' + bcolors.END)
-
-if __name__ == '__main__':
-    main()
-
-#print 'hi'
-#print bcolors.BOLD + 'Hello World !'
+    def addCard(self):
+        nextCard = self.deck.dealCard()
+        if nextCard == 'NoCards':
+            self.cardCount -= 1
+        else:
+            self.cards.append(nextCard)
+    def shiftCards(self,cs):
+        replacers = [x for x in cs if x < 12]
+        overs = self.cards[12:]
+        for r in replacers:
+            self.cards[r] = overs.pop()
+            self.cards = self.cards[:12]
