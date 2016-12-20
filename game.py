@@ -1,8 +1,7 @@
+from __future__ import print_function
 from objects import *
-extra = False
 
 def validSet(card1,card2,card3):
-    print('\n\t\t' + str(card1) +  '\t\t' + str(card2) + '\t\t' + str(card3) + '\n')
     for att in card1.attributes:
         att1 = card1.attributes[att]
         att2 = card2.attributes[att]
@@ -21,12 +20,34 @@ def allDifferent(att1,att2,att3):
     else:
         return False
 
-def validateInput(userInput):
+def numSets(board):
+    setCount = 0
+    for i in range(len(board.cards)):
+        for j in range(i):
+            for k in range(j):
+                c1 = board.cards[i]
+                c2 = board.cards[j]
+                c3 = board.cards[k]
+                if validSet(c1, c2, c3):
+                    setCount += 1
+    return setCount
+
+def printSetCount(board):
+    setCount = numSets(board)
+    print(str(setCount) + ' set', end='')
+    if setCount != 1:
+        print('s')
+    else:
+        print()
+
+def validateInput(userInput, numCards=12):
+    if not userInput:
+        return
     cards = userInput.strip()
-    if cards == 'add':
+    if cards == 'add' or cards == '?':
         return cards
     cards = cards.split(' ')
-    if not cards or len(cards) != 3:
+    if len(cards) != 3:
         print('Invalid input')
         return
     # try to convert input to integers
@@ -38,39 +59,37 @@ def validateInput(userInput):
         except ValueError:
             print('Invalid input')
             return
-    # numbers should be between 0 and 11 inclusive, no duplicates
+    # numbers should be between 0 (inclusive) and numCards (exclusive) no duplicates
     intCards.sort()
-    if extra:
-        limit = 14
-    else:
-        limit = 11
-    if intCards[0] < 0 or intCards[2] > limit or intCards[0] == intCards[1] or intCards[1] == intCards[2]:
+    if intCards[0] < 0 or intCards[2] >= numCards or intCards[0] == intCards[1] or intCards[1] == intCards[2]:
         print('Invalid input')
         return
     return intCards
 
 def main():
-    global extra
     score = 0
     board = Board()
     while not board.isEmpty():
         board.display()
         userInput = raw_input("\n\nPlease Enter Set in space separated list (e.g. 0 10 4): ")
-        cards = validateInput(userInput)
+        cards = validateInput(userInput, numCards=len(board.cards))
         if not cards:
             continue
         if cards == 'add':
             board.addCard()
             board.addCard()
             board.addCard()
-            extra = True
+            continue
+        if cards == '?':
+            printSetCount(board)
             continue
         c1,c2,c3 = cards
+        print('\n\t\t' + str(board.cards[c1]) +  '\t\t' + str(board.cards[c2]) +
+                '\t\t' + str(board.cards[c3]) + '\n')
         if validSet(board.cards[c1],board.cards[c2],board.cards[c3]):
-            print 'nice set'
-            if extra:
+            print('nice set')
+            if len(board.cards) > 12:
                 board.shiftCards([c1,c2,c3])
-                extra = False
             else:
                 board.replaceIndex(c1)
                 board.replaceIndex(c2)
